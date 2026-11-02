@@ -92,19 +92,10 @@ and the working 10⁻⁶ (right): the working tolerance does not limit the accur
 ### 4. Comparison of the optimizers
 
 <p align="center">
-  <img src="output/lbfgs/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
-  <img src="output/adam/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
-  <img src="output/bayesian/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_incumbent.png" width="60%">
 </p>
-<p align="center">
-  <img src="output/cmaes/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
-  <img src="output/ga/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
-  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_incumbent.png" width="32%">
-</p>
-<p align="center"><em>Convergence from the shared start design — L-BFGS, Adam, Bayesian optimization (top); CMA-ES, genetic algorithm, and
-the best inductance error reached against the number of FE simulations (bottom). Each run shows the objective (top) and the
-inductance of the proposal (bottom). L-BFGS enters the finish band after four iterations; Adam's momentum makes the inductance
-oscillate around the target.</em></p>
+<p align="center"><em>Best inductance error reached against the number of FE simulations, for all five optimizers from the shared start
+design.</em></p>
 
 <p align="center">
   <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_simulations.png" width="48%">
