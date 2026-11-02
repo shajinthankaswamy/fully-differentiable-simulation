@@ -1,0 +1,16 @@
+{
+ "lineax": {
+  "ref_backend": "lineax",
+  "ref_tol": 1e-12,
+  "mesh_mm": 0.1,
+  "cg_iters": 35,
+  "l_nh": 275.64494911094755
+ },
+ "feax": {
+  "ref_backend": "feax",
+  "ref_tol": 1e-12,
+  "mesh_mm": 0.1,
+  "cg_iters": 37,
+  "l_nh": 275.6449491109393
+ }
+}

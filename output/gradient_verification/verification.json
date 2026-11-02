@@ -1,0 +1,162 @@
+{
+ "geometry2": {
+  "gap_mm": 5.0,
+  "r1_rates": {
+   "lineax": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "feax": [
+    2.0,
+    2.0,
+    2.0
+   ]
+  }
+ },
+ "independent": {
+  "lineax": {
+   "relative_difference": 4.262489620359018e-12,
+   "cosine": 1.0000000000000002
+  },
+  "feax": {
+   "relative_difference": 2.5711500407406e-12,
+   "cosine": 1.0
+  }
+ },
+ "regions": {
+  "domain edge": {
+   "cells": 1884,
+   "r0_rate": 0.93,
+   "r1_rate": 2.0
+  },
+  "axis strip r < 0.3 mm": {
+   "cells": 1800,
+   "r0_rate": 0.999,
+   "r1_rate": 2.0
+  },
+  "air gap": {
+   "cells": 740,
+   "r0_rate": 1.003,
+   "r1_rate": 2.0
+  },
+  "core": {
+   "cells": 40522,
+   "r0_rate": 0.927,
+   "r1_rate": 2.0
+  },
+  "coil window": {
+   "cells": 12780,
+   "r0_rate": 1.004,
+   "r1_rate": 2.0
+  }
+ },
+ "dirichlet": {
+  "dirichlet_dofs": 1888,
+  "seed_nonzero_on_dirichlet": 0,
+  "gradient_difference": 0.0,
+  "seeded_r1_rate": 1.998
+ },
+ "chain": {
+  "datasheet (on grid)": {
+   "leg_inner_diameter +": {
+    "inductance": 0.975,
+    "loss": 0.974
+   },
+   "leg_inner_diameter -": {
+    "inductance": 1.0,
+    "loss": 1.0
+   },
+   "center_post_diameter +": {
+    "inductance": 1.993,
+    "loss": 1.0
+   },
+   "center_post_diameter -": {
+    "inductance": 2.006,
+    "loss": 1.0
+   },
+   "leg_height +": {
+    "inductance": 0.998,
+    "loss": 1.0
+   },
+   "leg_height -": {
+    "inductance": 0.992,
+    "loss": 1.001
+   },
+   "window_height +": {
+    "inductance": 2.025,
+    "loss": 2.006
+   },
+   "window_height -": {
+    "inductance": 1.978,
+    "loss": 1.993
+   },
+   "coil_clearance +": {
+    "inductance": null,
+    "loss": 2.0
+   },
+   "coil_clearance -": {
+    "inductance": null,
+    "loss": 2.282
+   },
+   "gap_size +": {
+    "inductance": 1.0,
+    "loss": 1.0
+   },
+   "gap_size -": {
+    "inductance": 0.997,
+    "loss": 0.997
+   }
+  },
+  "off grid": {
+   "leg_inner_diameter +": {
+    "inductance": 1.981,
+    "loss": 1.996
+   },
+   "leg_inner_diameter -": {
+    "inductance": 2.022,
+    "loss": 2.002
+   },
+   "center_post_diameter +": {
+    "inductance": 1.997,
+    "loss": 1.996
+   },
+   "center_post_diameter -": {
+    "inductance": 2.003,
+    "loss": 2.01
+   },
+   "leg_height +": {
+    "inductance": 2.091,
+    "loss": 2.014
+   },
+   "leg_height -": {
+    "inductance": 1.898,
+    "loss": 1.982
+   },
+   "window_height +": {
+    "inductance": 1.902,
+    "loss": 1.954
+   },
+   "window_height -": {
+    "inductance": 2.253,
+    "loss": 2.055
+   },
+   "coil_clearance +": {
+    "inductance": null,
+    "loss": 1.999
+   },
+   "coil_clearance -": {
+    "inductance": null,
+    "loss": 1.997
+   },
+   "gap_size +": {
+    "inductance": 1.999,
+    "loss": 1.999
+   },
+   "gap_size -": {
+    "inductance": 2.001,
+    "loss": 1.999
+   }
+  }
+ }
+}

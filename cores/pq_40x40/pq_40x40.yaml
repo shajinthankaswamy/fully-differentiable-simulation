@@ -1,0 +1,71 @@
+type: pq_40x40
+
+geometry:
+  leg_inner_diameter: 0.037
+  center_post_diameter: 0.0149   # ≈ for A_e ≈ 201 mm²
+  leg_height: 0.0398          # one side
+  window_height: 0.0295
+  coil_clearance: 0.0005
+
+datasheet:  
+  sigma_l_over_A: 492          # m⁻¹
+  l_e:     93e-3            # m    (92.4 mm)
+  A_e:     189e-6             # m²   (201 mm²)
+  A_min:   174e-6             # m²   approx
+  V_e:     17580e-9           # m³   (18590 mm³)
+  m: 90.0
+  
+parameters:
+  gap_size: [0.0, 0.0005, 0.001, 0.002, 0.003]   # gaps to simulate (in meters)
+  gap_number: [0, 1, 3, 5]
+  coil_split: ['layer', 'sectional']
+  materials: ['N87', 'N95', 'N97']
+
+additional_data:
+  ungapped_data:
+    N49:
+      mu_e: 1250
+      tolerance: "+30/–20%"
+      AL: 3200
+      p_v:
+        "<4.80 (50 mT, 500 kHz, 100°C)": 4.8
+      ordering_code: B65883A0000R049
+    N92:
+      mu_e: 1250
+      tolerance: "+30/–20%"
+      AL: 3200
+      p_v:
+        "<3.10 (100 mT, 100 kHz, 100°C)": 3.1
+      ordering_code: B65883A0000R092
+    N87:
+      mu_e: 1680
+      tolerance: "+30/–20%"
+      AL: 4300
+      p_v:
+        "<1.80 (100 mT, 100 kHz, 100°C)": 1.8
+      ordering_code: B65883A0000R087
+    N97:
+      mu_e: 1755
+      tolerance: "+30/–20%"
+      AL: 4500
+      p_v:
+        "<1.65 (100 mT, 100 kHz, 100°C)": 1.65
+      ordering_code: B65883A0000R097
+    N95:
+      mu_e: 2145
+      tolerance: "+30/–20%"
+      AL: 5500
+      p_v:
+        "<1.95 (100 mT, 100 kHz, 25°C)": 1.95
+        "<1.75 (100 mT, 100 kHz, 50–100°C)": 1.75
+        "<2.10 (100 mT, 100 kHz, 120°C)": 2.1
+      ordering_code: B65883A0000R095
+  
+  # Ungapped AL values (nH/N²) for common power materials – typical values
+  AL_values:
+    N49:  3200
+    N92:  3200
+    N87:  4300
+    N97:  4500
+    N95:  5500
+  

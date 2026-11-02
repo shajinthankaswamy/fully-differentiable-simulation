@@ -1,0 +1,27 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["output", "doc", "cores"]
+
+[tool.ruff.lint]
+# pyflakes, pycodestyle errors and warnings, import sorting.
+select = ["E", "F", "W", "I"]
+ignore = [
+    # The formatter owns line length; the only lines it leaves long are string
+    # literals and comments, which are better long than broken.
+    "E501",
+    # The inductance is `l` throughout, by the project's lower-case naming rule.
+    "E741",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["new_fem_engine", "optimizers", "objective", "compare_plots", "main_run_optimizer", "adam", "lbfgs", "cmaes", "ga", "bayesian", "helpers"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: accuracy and end-to-end checks at the 0.1 mm working mesh (exclude with -m 'not slow')",
+]
