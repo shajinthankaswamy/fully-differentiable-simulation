@@ -13,7 +13,7 @@ inductance of 250 nH: 6 geometric design variables, 10 physical constraints.
 ## Highlights
 
 - **FE solver.** Axisymmetric magnetostatic FE solver in JAX (Q1 elements), solved by conjugate gradients with a geometric multigrid
-  V-cycle preconditioner. A 206k-cell system solves in 0.62 s on CPU with 18–28 CG iterations at every mesh size from 0.5 to 0.05 mm.
+  V-cycle preconditioner. On the 0.1 mm conforming mesh (206,400 cells, 205,457 unknowns) one solve takes 0.62 s on CPU, with 18–28 CG iterations at every mesh size from 0.5 to 0.05 mm.
 - **Adjoint sensitivities.** The adjoint method is implemented as a `jax.custom_vjp`: one forward and one adjoint solve give the
   gradient with respect to all design variables, independent of their number.
 - **Inverse design framework.** Inductor design is formulated as a constrained inverse problem (6 design variables, 10 conditions on
@@ -47,7 +47,7 @@ meet all ten conditions.
 
 ### 1. Forward model
 
-The datasheet core (N87, 1.0 mm gap) at 1 A through one turn on the 0.1 mm mesh.
+The datasheet core (N87, 1.0 mm gap) at 1 A through one turn on the 0.1 mm conforming mesh (206,400 cells).
 
 <p align="center">
   <img src="output/lineax_forward/geometry.png" width="32%">
@@ -138,7 +138,7 @@ optimization, CMA-ES and genetic algorithm.</em></p>
 
 | Step       | What                                                                                                                                                                                                 | Where                                     |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Model      | Axisymmetric magnetostatics in the flux function ψ = r·A_φ: −∇·((ν/r)∇ψ) = J_φ. Bilinear (Q1) elements on a fixed 0.1 mm grid (350 × 600 cells). Cells cut by a material edge are treated as laminates, so the inductance is continuous in the geometry. | `new_fem_engine/problem.py`, `geometry.py` |
+| Model      | Axisymmetric magnetostatics in the flux function ψ = r·A_φ: −∇·((ν/r)∇ψ) = J_φ. Bilinear (Q1) elements on a fixed 0.1 mm grid (350 × 600 = 210,000 cells, 209,051 unknowns). Cells cut by a material edge are treated as laminates, so the inductance is continuous in the geometry. | `new_fem_engine/problem.py`, `geometry.py` |
 | Solver     | CG with a geometric multigrid V-cycle preconditioner (damped Jacobi smoothing, Galerkin coarse operators), compiled with the solver. Two CG libraries: lineax and feax (`jax.scipy` CG).                | `new_fem_engine/solver.py`, `multigrid.py` |
 | Gradient   | Adjoint method as a `jax.custom_vjp`: one forward and one adjoint solve give dL/d(all parameters); the chain rule through homogenization and geometry gives dL/dx for the six design variables.        | `new_fem_engine/solver.py`                |
 | Objective  | J(x) = V/V_e + w_b (L/L* − 1)² + w_c Σ max(g_k + m, 0)², with 10 conditions g_k (flux density in post, yokes and outer leg ≤ 0.30 T, copper and winding fit, coil clearance, gap ≤ 0.1 window height, envelope, domain, volume). | `optimizers/objective.py`, `settings.py`  |
@@ -161,8 +161,18 @@ inductance, and lineax is used as 2.1–7.0 % faster at that tolerance.
 
 ## How to run
 
-Python 3.12. Main packages: `jax`, `lineax`, `equinox`, `optax`, `feax`, `fenics-basix`, `meshio`, `evosax`, `gpjax`, `numpy`,
-`matplotlib`, `pyyaml`, `pytest`.
+### Installation
+
+Python 3.12. From the repository root:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pytest -m "not slow"             # quick check
+```
+
+### Running the studies
 
 | What                                            | Command                                                  |
 | ----------------------------------------------- | -------------------------------------------------------- |
@@ -195,4 +205,4 @@ is enforced through the 0.30 T flux-density conditions. Natural extensions are:
 Shajin Thankaswamy — [shajinthankaswamy.github.io](https://shajinthankaswamy.github.io)
 
 Supervisors: Frank Wendler (Chair of Materials Simulation, FAU Erlangen-Nürnberg) and Georg Kruse (AI-augmented Simulation group,
-Fraunhofer IISB). The FE solver is derived from [JAX-FEM](https://github.com/deepmodeling/jax-fem).
+Fraunhofer IISB).
