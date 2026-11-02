@@ -1,8 +1,5 @@
 # Benchmarking Gradient-Based and Black-Box Optimizers on a Differentiable Physics Simulator
 
-Code for the project report of the same title (FAU Erlangen-Nürnberg, Chair of Materials Simulation, in cooperation with
-Fraunhofer IISB, Erlangen, 04/2026 – 10/2026).
-
 **Question.** A finite-element (FE) solver in an optimization loop is expensive, because every evaluated design costs one FE
 simulation. Gradient-based optimizers need the derivative of the output with respect to the geometry, which common FE solvers do
 not provide; gradient-free optimizers need only the output, but many more evaluations. For a design problem with only a few
@@ -46,14 +43,96 @@ meet all ten conditions.
   where both the yoke and the post operate near the 0.30 T limit — about 20 % below the datasheet volume.
 - **Bayesian optimization comes close on both.** 19 % more simulations than L-BFGS, and within 1.5 % of the smallest core.
 
+## Figures
+
+### 1. Forward model
+
+The datasheet core (N87, 1.0 mm gap) at 1 A through one turn on the 0.1 mm mesh.
+
 <p align="center">
-  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_simulations.png" width="45%">
-  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_volume.png" width="45%">
+  <img src="output/lineax_forward/geometry.png" width="32%">
+  <img src="output/lineax_forward/psi.png" width="32%">
+  <img src="output/lineax_forward/bfield.png" width="32%">
 </p>
+<p align="center"><em>Geometry with core, coil and gap (left); flux function ψ, whose level sets are the flux lines (centre); flux-density
+magnitude with flux lines (right).</em></p>
+
+### 2. Choice of the solver
+
 <p align="center">
   <img src="output/solver_comparison/mesh_vs_inductance.png" width="45%">
-  <img src="output/gradient_taylor_test/taylor_test.png" width="45%">
+  <img src="output/solver_comparison/tolerance_choice.png" width="52%">
 </p>
+<p align="center"><em>Mesh study over ten cell sizes from 0.5 to 0.05 mm: the 0.1 mm working mesh lies 0.41 nH (0.15 %) below the converged
+inductance (left). CG tolerance sweep: the inductance error reaches its round-off plateau at 10⁻⁶, which is used as the working
+tolerance (right).</em></p>
+
+<p align="center">
+  <img src="output/solver_inductance_comparison/gap_vs_total_time.png" width="48%">
+  <img src="output/solver_inductance_comparison/gap_vs_backward_time.png" width="48%">
+</p>
+<p align="center"><em>Time of one gradient (forward + adjoint solve, left) and of the adjoint solve alone (right) over ten air gaps, median of
+ten calls. Both CG libraries return the same inductance; lineax is 2.1–7.0 % faster at the working tolerance.</em></p>
+
+### 3. Verification of the adjoint gradient
+
+<p align="center">
+  <img src="output/gradient_taylor_test/taylor_test.png" width="60%">
+</p>
+<p align="center"><em>Second-order Taylor test in three random directions. Without the gradient, the remainder r₀ falls as ε; with it, r₁
+falls as ε² — which holds only for an exact derivative. Rate 2.000 for both CG libraries.</em></p>
+
+<p align="center">
+  <img src="output/gradient_taylor_test/taylor_test_libraries.png" width="48%">
+  <img src="output/gradient_taylor_test/taylor_test_tolerance.png" width="48%">
+</p>
+<p align="center"><em>Taylor test down to the round-off plateau of about 5 × 10⁻¹³ for both libraries (left), and at CG tolerances of 10⁻¹⁰
+and the working 10⁻⁶ (right): the working tolerance does not limit the accuracy of the gradient.</em></p>
+
+### 4. Comparison of the optimizers
+
+<p align="center">
+  <img src="output/lbfgs/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+  <img src="output/adam/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+  <img src="output/bayesian/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+</p>
+<p align="center">
+  <img src="output/cmaes/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+  <img src="output/ga/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/convergence.png" width="32%">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_incumbent.png" width="32%">
+</p>
+<p align="center"><em>Convergence from the shared start design — L-BFGS, Adam, Bayesian optimization (top); CMA-ES, genetic algorithm, and
+the best inductance error reached against the number of FE simulations (bottom). Each run shows the objective (top) and the
+inductance of the proposal (bottom). L-BFGS enters the finish band after four iterations; Adam's momentum makes the inductance
+oscillate around the target.</em></p>
+
+<p align="center">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_simulations.png" width="48%">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_time.png" width="48%">
+</p>
+<p align="center">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_volume.png" width="48%">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_analytical.png" width="48%">
+</p>
+<p align="center"><em>FE simulations (top left) and wall time (top right) until the best feasible design first reached V ≤ 0.886 V_e;
+ferrite volume of each re-simulated final design (bottom left); FE and reluctance-model inductance of each final design
+(bottom right).</em></p>
+
+<p align="center">
+  <img src="output/comparison/pq_40x40_target250.0nH_N87_mesh0.100mm/optimizer_vs_parameter_change.png" width="85%">
+</p>
+<p align="center"><em>Change of the six design variables from the datasheet design: all five optimizers shorten the legs and thin the yoke;
+CMA-ES and Bayesian optimization also shrink the post and the gap together.</em></p>
+
+<p align="center">
+  <img src="output/lbfgs/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/bfield.png" width="19%">
+  <img src="output/adam/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/bfield.png" width="19%">
+  <img src="output/bayesian/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/bfield.png" width="19%">
+  <img src="output/cmaes/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/bfield.png" width="19%">
+  <img src="output/ga/pq_40x40_target250.0nH_N87_mesh0.100mm/lineax/bfield.png" width="19%">
+</p>
+<p align="center"><em>The five finished cores with their flux density and flux lines at 1 A through one turn: L-BFGS, Adam, Bayesian
+optimization, CMA-ES and genetic algorithm.</em></p>
 
 ## Method in short
 
@@ -100,12 +179,16 @@ Python 3.12. Main packages: `jax`, `lineax`, `equinox`, `optax`, `feax`, `fenics
 Most study scripts accept `--plot` to redraw their figures from the saved CSV without solving again. Run settings are in
 `optimizers/settings.py`.
 
-## Limitations
+## Scope and future work
 
-The model is linear (saturation enters only through the 0.30 T flux-density conditions), axisymmetric and magnetostatic, so core loss
-and the 3D leakage around the outer legs are not represented. Each optimizer was run once with a fixed seed, on one core and one
-target, and the ranking for a larger number of design variables was not studied. The FE model was checked against the analytical
-reluctance model, not against a measured core.
+The study covers a linear, axisymmetric magnetostatic model with six design variables, one core and one inductance target; saturation
+is enforced through the 0.30 T flux-density conditions. Natural extensions are:
+
+- repeating the stochastic optimizers over several random seeds and inductance targets;
+- scaling to more design variables, where the adjoint gradient keeps its cost of two simulations while finite differences and
+  population sizes grow;
+- a differentiable inverse-design loop in which a global search or a generative model conditioned on the target inductance proposes
+  candidate designs, and the differentiable FE model refines each of them with its exact adjoint gradient.
 
 ## Author
 
